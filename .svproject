@@ -8,7 +8,7 @@
 </pluginPaths>
 <libraryPaths/>
 <argFilePaths>
-<argFilePath path="${project_loc}/sim/sve.f"/>
+<argFilePath path="${project_loc}/sim/scripts/sve.f"/>
 </argFilePaths>
 <sourceCollections/>
 <projectRefs/>

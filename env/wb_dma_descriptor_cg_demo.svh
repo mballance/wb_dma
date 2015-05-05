@@ -6,8 +6,6 @@
  * Stimulus coverage for the DMA descriptor. This coverage is specialized
  * for the amount of time we typically have for simulation during a demo.
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_DESCRIPTOR_CG_DEMO_SVH
-`define INCLUDED_WB_DMA_DESCRIPTOR_CG_DEMO_SVH
 
 class wb_dma_descriptor_cg_demo;
 	
@@ -117,4 +115,3 @@ class wb_dma_descriptor_cg_demo;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_DESCRIPTOR_CG_SVH */

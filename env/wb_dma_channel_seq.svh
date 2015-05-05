@@ -5,8 +5,6 @@
  * 
  * Generates DMA descriptors for one DMA channel 
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_CHANNEL_SEQ_SVH
-`define INCLUDED_WB_DMA_CHANNEL_SEQ_SVH
  
 class wb_dma_channel_seq extends uvm_sequence #(wb_dma_descriptor);
 	`uvm_object_utils(wb_dma_channel_seq)
@@ -58,5 +56,4 @@ class wb_dma_channel_seq extends uvm_sequence #(wb_dma_descriptor);
 	
 endclass
 
-`endif /* INCLUDED_WB_DMA_CHANNEL_SEQ_SVH */
 

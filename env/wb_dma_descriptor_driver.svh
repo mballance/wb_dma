@@ -5,8 +5,6 @@
  *
  * Driver that programs the DMA controller based on a DMA descriptor
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_DESCRIPTOR_DRIVER_SVH
-`define INCLUDED_WB_DMA_DESCRIPTOR_DRIVER_SVH
 
 `wb_dma_analysis_closure_imp_t(drv_descriptor_complete_analysis_export_t, 
 	wb_dma_desc_complete_ev, wb_dma_descriptor_driver, descriptor_complete)
@@ -322,4 +320,3 @@ class wb_dma_descriptor_driver extends uvm_driver #(wb_dma_descriptor);
 	
 endclass 
 
- `endif /* INCLUDED_WB_DMA_DESCRIPTOR_DRIVER_SVH */

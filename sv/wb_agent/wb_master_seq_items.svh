@@ -5,10 +5,9 @@
  * 
  * Sequence items for use with the Wishbone Master driver
  ****************************************************************************/
-`ifndef INCLUDED_WB_MASTER_SEQ_ITEMS_SVH
-`define INCLUDED_WB_MASTER_SEQ_ITEMS_SVH
 
 class wb_master_req extends uvm_sequence_item;
+	`uvm_object_utils(wb_master_req)
 
 	rand bit [31:0]			addr;
 	rand bit [31:0]			data[];
@@ -33,8 +32,7 @@ class wb_master_req extends uvm_sequence_item;
 endclass
 
 class wb_master_rsp extends uvm_sequence_item;
-	`uvm_object_utils_begin(wb_master_rsp)
-	`uvm_object_utils_end
+	`uvm_object_utils(wb_master_rsp)
 
 	bit [31:0]				data[4];
 	int						n_bytes;
@@ -42,6 +40,4 @@ class wb_master_rsp extends uvm_sequence_item;
 	
 endclass 
 
-
-`endif /* INCLUDED_WB_MASTER_SEQ_ITEMS_SVH */
 	

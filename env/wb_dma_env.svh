@@ -5,8 +5,6 @@
  *
  * Base DMA Testbench Environment.
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_ENV_SVH
-`define INCLUDED_WB_DMA_ENV_SVH
 
 class wb_dma_env extends uvm_env;
 	
@@ -180,6 +178,5 @@ class wb_dma_env extends uvm_env;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_ENV_SVH */
 
 

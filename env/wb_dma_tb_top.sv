@@ -10,7 +10,7 @@
 
 module wb_dma_tb_top;
 	import uvm_pkg::*;
-	import wb_dma_tb_pkg::*;
+	import wb_dma_tests_pkg::*;
 	import wb_vip_pkg::*;
 
 parameter CH_COUNT = 4;

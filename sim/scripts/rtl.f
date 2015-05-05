@@ -14,4 +14,5 @@ ${PROJECT_LOC}/rtl/wb_dma_pri_enc_sub.v
 ${PROJECT_LOC}/rtl/wb_dma_rf.v
 ${PROJECT_LOC}/rtl/wb_dma_wb_mast.v
 ${PROJECT_LOC}/rtl/wb_dma_wb_slv.v
+${PROJECT_LOC}/rtl/wb_dma_wb_if.v
 

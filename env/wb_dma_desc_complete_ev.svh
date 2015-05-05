@@ -5,8 +5,6 @@
  *
  * Event that notifies clients that a DMA descriptor has completed.
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_DESC_COMPLETE_EV_SVH
-`define INCLUDED_WB_DMA_DESC_COMPLETE_EV_SVH
 
 class wb_dma_desc_complete_ev extends uvm_sequence_item;
 	
@@ -20,6 +18,5 @@ class wb_dma_desc_complete_ev extends uvm_sequence_item;
 	
 endclass
 
-`endif /* INCLUDED_WB_DMA_DESC_COMPLETE_EV_SVH */
  
  

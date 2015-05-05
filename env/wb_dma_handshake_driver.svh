@@ -8,8 +8,6 @@
  * transfer, this driver interacts with the hardware-handshake interface
  * to request transfers and (possibly) request descriptor restart or skip
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_HANDSHAKE_DRIVER_SVH
-`define INCLUDED_WB_DMA_HANDSHAKE_DRIVER_SVH
 
 class wb_dma_handshake_driver extends uvm_component;
 	
@@ -207,5 +205,4 @@ class wb_dma_handshake_driver extends uvm_component;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_HANDSHAKE_DRIVER_SVH */
 

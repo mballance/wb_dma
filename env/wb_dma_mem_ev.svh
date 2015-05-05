@@ -11,6 +11,8 @@
 `define INCLUDED_WB_DMA_MEM_IF_SVH
 
 class wb_dma_mem_ev extends uvm_sequence_item;
+	`uvm_object_utils(wb_dma_mem_ev)
+	
 	int							ifc;
 	bit [31:0]					addr;
 	bit [31:0]					data;

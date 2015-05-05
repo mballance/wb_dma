@@ -5,8 +5,6 @@
  * 
  * Stimulus coverage for the DMA descriptor
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_DESCRIPTOR_CG_SMALL_SVH
-`define INCLUDED_WB_DMA_DESCRIPTOR_CG_SMALL_SVH
 
 class wb_dma_descriptor_cg_small;
 	
@@ -122,4 +120,3 @@ class wb_dma_descriptor_cg_small;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_DESCRIPTOR_CG_SVH */

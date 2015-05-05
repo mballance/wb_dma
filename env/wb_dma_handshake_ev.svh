@@ -7,8 +7,6 @@
  * requested a restart or skip operation. This event is used by the 
  * scoreboard to track handshake activity and adjust its expectations.
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_HANDSHAKE_EV_SVH
-`define INCLUDED_WB_DMA_HANDSHAKE_EV_SVH
 
 typedef enum {
 	Restart,
@@ -16,6 +14,7 @@ typedef enum {
 } handshake_ev_t;
 	
 class wb_dma_handshake_ev extends uvm_sequence_item;
+	`uvm_object_utils(wb_dma_handshake_ev)
 	
 	// The channel on which this event occurs
 	int					channel_id;
@@ -42,4 +41,3 @@ class wb_dma_handshake_ev extends uvm_sequence_item;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_HANDSHAKE_EV_SVH */

@@ -5,10 +5,9 @@
  * 
  * Sequence items used by the slave driver
  ****************************************************************************/
-`ifndef INCLUDED_WB_SLAVE_SEQ_ITEMS_SVH
-`define INCLUDED_WB_SLAVE_SEQ_ITEMS_SVH
 
 class wb_slave_req extends uvm_sequence_item;
+	`uvm_object_utils(wb_slave_req)
 //	`uvm_object_utils_begin(wb_slave_req)
 //		`uvm_field_int(data, uvm_ALL_ON)
 //	`uvm_object_utils_end
@@ -18,6 +17,7 @@ class wb_slave_req extends uvm_sequence_item;
 endclass 
 	
 class wb_slave_rsp extends uvm_sequence_item;
+	`uvm_object_utils(wb_slave_rsp)
 
 	rand bit [31:0]			addr;
 	rand bit [31:0]			data;
@@ -34,5 +34,4 @@ class wb_slave_rsp extends uvm_sequence_item;
 
 endclass
 
-`endif /* INCLUDED_WB_SLAVE_SEQ_ITEMS_SVH */
 

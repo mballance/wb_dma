@@ -6,8 +6,6 @@
  * Scoreboard for the DMA testbench. Tracks memory activity from the DMA
  * engine to determine whether transfers are correctly carried out
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_SCOREBOARD_SVH
-`define INCLUDED_WB_DMA_SCOREBOARD_SVH
 
 
 `wb_dma_analysis_closure_imp_t(mem_analysis_export_t, 
@@ -596,5 +594,4 @@ class wb_dma_scoreboard extends uvm_component;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_SCOREBOARD_SVH */
 

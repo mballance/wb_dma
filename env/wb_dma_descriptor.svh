@@ -5,8 +5,6 @@
  *
  * Describes a DMA descriptor to be executed by a channel on the DMA engine
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_DESCRIPTOR_SVH
-`define INCLUDED_WB_DMA_DESCRIPTOR_SVH
 
 
 typedef enum {
@@ -25,6 +23,7 @@ typedef class wb_dma_ll_desc;
 
 
 class wb_dma_descriptor extends uvm_sequence_item;
+	`uvm_object_utils(wb_dma_descriptor)
 	
 	// Increment source
 	rand bit					inc_src;
@@ -270,5 +269,4 @@ class wb_dma_ll_desc extends uvm_sequence_item;
 endclass
 
 
-`endif /* INCLUDED_WB_DMA_DESCRIPTOR_SVH */
  

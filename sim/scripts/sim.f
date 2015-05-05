@@ -13,6 +13,7 @@ ${PROJECT_LOC}/env/wb_dma_irq_if.sv
 ${PROJECT_LOC}/sv/wb_agent/wb_if.sv
 ${PROJECT_LOC}/sv/wb_agent/wb_vip_pkg.sv
 ${PROJECT_LOC}/env/wb_dma_tb_pkg.sv
+${PROJECT_LOC}/tests/wb_dma_tests_pkg.sv
+${PROJECT_LOC}/rtl/wb_dma_top.v
 ${PROJECT_LOC}/env/wb_dma_tb_top.sv
 
-${PROJECT_LOC}/rtl/wb_dma_top.v

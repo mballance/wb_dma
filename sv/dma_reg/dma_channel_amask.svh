@@ -18,7 +18,7 @@ class dma_channel_amask extends uvm_reg;
 	
 	function void build();
 		MASK = uvm_reg_field::type_id::create("MASK");
-		MASK.configure(this, 28, 4, "RW", 0, 0, 1, 1, 0);
+		MASK.configure(this, 28, 4, "RW", 0, 'hffff_fff, 1, 1, 0);
 	endfunction
 
 endclass

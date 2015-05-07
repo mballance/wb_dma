@@ -32,8 +32,12 @@ class dma_reg_check_reset_seq extends dma_reg_seq_base;
 		foreach (dma_regs[i]) begin
 			ref_data = dma_regs[i].get_reset();
 			dma_regs[i].read(status, data);
-		
-			$display("RESET: 'h%08h ; DATA: 'h%08h", ref_data, data);
+	
+			if (ref_data != data) begin
+				`uvm_error("RESET_TEST_SEQ:", 
+						$sformatf("Register %0s: reset read error; Expected: 'h%08h Actual: 'h%08h",
+							dma_regs[i].get_name(), ref_data, data));
+			end
 		end
 
 	endtask

@@ -26,8 +26,6 @@ class wb_dma_env extends uvm_env;
 	memory_mgr											mem_mgr;
 	timer												m_timer;
 	
-	wb_dma_sw											m_sw;
-	
 	wb_dma_irq_monitor									m_irq_monitor;
 	
 	wb_dma_scoreboard									m_scoreboard;
@@ -73,8 +71,6 @@ class wb_dma_env extends uvm_env;
 		end 
 		
 		mem_mgr = new("mem_mgr", this);
-		
-		m_sw = new("sw", this);
 		
 		m_irq_monitor = wb_dma_irq_monitor::type_id::create("m_irq_monitor", this);
 		
@@ -141,28 +137,15 @@ class wb_dma_env extends uvm_env;
 		for (int i=0; i<m_num_channels; i++) begin
 			handshake_drivers[i].init(i);
 
-			m_sw.dma_desc_analysis_port.connect(		
-				handshake_drivers[i].descriptor_analysis_export);
 			handshake_drivers[i].handshake_analysis_port.connect(
 				m_scoreboard.handshake_ev_analysis_export.exp);
 		end
 		
 		mem_mgr.init(m0_agent.m_seqr, m1_agent.m_seqr);
 		
-		m_sw.init(mem_mgr, m_timer);
-		
-		m_irq_monitor.irq_analysis_port.connect(
-			m_sw.irq_analysis_export.exp);
-			
 		// Connect the scoreboard to memory traffic
 		mem_mgr.mem_analysis_port.connect(m_scoreboard.mem_analysis_export.exp);
 		
-		m_sw.dma_desc_analysis_port.connect(
-			m_scoreboard.descriptor_analysis_export.exp);
-		
-		m_sw.desc_complete_analysis_port.connect(
-			m_scoreboard.descriptor_complete_analysis_export.exp);
-			
 		m_scoreboard.init(mem_mgr);
 		
 		// Connect the register model

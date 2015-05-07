@@ -5,8 +5,6 @@
  * 
  * uvm Driver for a Wishbone Master interface
  ****************************************************************************/
-`ifndef INCLUDED_WB_MASTER_DRIVER_SVH
-`define INCLUDED_WB_MASTER_DRIVER_SVH
 
 class wb_master_driver extends uvm_driver #(wb_master_req, wb_master_rsp);
 	`uvm_component_utils (wb_master_driver)
@@ -17,7 +15,7 @@ class wb_master_driver extends uvm_driver #(wb_master_req, wb_master_rsp);
 		super.new(name, parent);
 	endfunction
 	
-	function void connect();
+	function void connect_phase(uvm_phase phase);
 		uvm_object cfg_o;
 		wb_if_config_wrapper #(virtual wb_if) cfg;
 		
@@ -41,7 +39,7 @@ class wb_master_driver extends uvm_driver #(wb_master_req, wb_master_rsp);
 	 *
 	 * Override from class 
 	 */
-	virtual task run_phase(input uvm_phase phase);
+	virtual task run_phase(uvm_phase phase);
 		wb_master_req req = null;
 		wb_master_rsp rsp = null;
 		int timeout;
@@ -141,4 +139,3 @@ class wb_master_driver extends uvm_driver #(wb_master_req, wb_master_rsp);
 	
 endclass 
 
-`endif /* INCLUDED_WB_MASTER_DRIVER_SVH */

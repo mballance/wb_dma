@@ -12,9 +12,9 @@ class wb_dma_slave_seq extends uvm_sequence #(wb_slave_req, wb_slave_rsp);
 	`uvm_object_utils(wb_dma_slave_seq)
 	
 	int							m_ifc_id;
-	wb_dma_memory_mgr			m_mem_mgr;
+	memory_mgr			m_mem_mgr;
 	
-	function void init(int ifc_id, wb_dma_memory_mgr mem_mgr);
+	function void init(int ifc_id, memory_mgr mem_mgr);
 		m_ifc_id  = ifc_id;
 		m_mem_mgr = mem_mgr;
 	endfunction 

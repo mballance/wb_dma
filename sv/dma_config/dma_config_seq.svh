@@ -1,14 +1,14 @@
 /****************************************************************************
- * dma_config.svh
+ * dma_config_seq.svh
  ****************************************************************************/
 
 /**
- * Class: dma_config
+ * Class: dma_config_seq
  * 
  * TODO: Add class documentation
  */
-class dma_config extends uvm_sequence_item;
-	`uvm_object_utils(dma_config)
+class dma_config_seq extends uvm_sequence;
+	`uvm_object_utils(dma_config_seq)
 	
 	// Configuration fields
 	
@@ -23,11 +23,29 @@ class dma_config extends uvm_sequence_item;
 
 	// Priorities for all the channels
 	rand bit[2:0]					ch_priority[31];
+	
+	dma_reg_block					dma_regs;
 
 	function new(string name="dma_config");
 		super.new(name);
 	endfunction
+	
+	virtual task select_config();
+		assert(this.randomize());
+	endtask
 
+	/**
+	 * Task: body
+	 *
+	 * Override from class 
+	 */
+	virtual task body();
+		// Configure the DMA engine
+		select_config();
+		
+		// Write registers
+
+	endtask
 	
 
 endclass

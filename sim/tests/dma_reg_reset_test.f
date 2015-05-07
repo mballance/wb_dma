@@ -1,0 +1,2 @@
++UVM_TESTNAME=wb_dma_reg_test_base
++uvm_set_type_override=dma_reg_seq_base,dma_reg_check_reset_seq

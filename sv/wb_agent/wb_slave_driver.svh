@@ -5,8 +5,6 @@
  * 
  * uvm Driver for a Wishbone Slave interface
  ****************************************************************************/
-`ifndef INCLUDED_WB_SLAVE_DRIVER_SVH
-`define INCLUDED_WB_SLAVE_DRIVER_SVH
 
 class wb_slave_driver extends uvm_driver #(wb_slave_req, wb_slave_rsp);
 	`uvm_component_utils(wb_slave_driver)
@@ -17,7 +15,7 @@ class wb_slave_driver extends uvm_driver #(wb_slave_req, wb_slave_rsp);
 		super.new(name, parent);
 	endfunction
 	 
-	function void connect();
+	function void connect_phase(uvm_phase phase);
 		uvm_object cfg_o;
 		wb_if_config_wrapper #(virtual wb_if) cfg;
 		
@@ -34,7 +32,7 @@ class wb_slave_driver extends uvm_driver #(wb_slave_req, wb_slave_rsp);
 		m_if = cfg.m_if;
 	endfunction
 	
-	task run();
+	task run_phase(uvm_phase phase);
 		wb_slave_req req = null;
 		wb_slave_rsp rsp = null;
 		
@@ -97,4 +95,3 @@ class wb_slave_driver extends uvm_driver #(wb_slave_req, wb_slave_rsp);
 	 
 endclass 
 
-`endif /* INCLUDED_WB_SLAVE_DRIVER_SVH */

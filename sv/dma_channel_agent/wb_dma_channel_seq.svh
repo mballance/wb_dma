@@ -6,7 +6,7 @@
  * Generates DMA descriptors for one DMA channel 
  ****************************************************************************/
  
-class wb_dma_channel_seq extends uvm_sequence #(wb_dma_descriptor);
+class wb_dma_channel_seq extends uvm_sequence #(dma_channel_transfer_desc);
 	`uvm_object_utils(wb_dma_channel_seq)
 	
 	int						m_channel_id;
@@ -38,7 +38,7 @@ class wb_dma_channel_seq extends uvm_sequence #(wb_dma_descriptor);
 	
 	
 	task body();
-		wb_dma_descriptor desc = wb_dma_descriptor::type_id::create("desc");
+		dma_channel_transfer_desc desc = dma_channel_transfer_desc::type_id::create("desc");
 		
 		desc.channel = m_channel_id;
 		

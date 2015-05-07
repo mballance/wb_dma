@@ -1,14 +1,14 @@
 /****************************************************************************
- * wb_dma_descriptor_cg.svh
+ * dma_channel_transfer_desc_cg.svh
  * 
  * Copyright 2010 Mentor Graphics Corporation. All Rights Reserved
  * 
  * Stimulus coverage for the DMA descriptor
  ****************************************************************************/
 
-class wb_dma_descriptor_cg_small;
+class dma_channel_transfer_desc_cg_small;
 	
-	wb_dma_descriptor					m_desc;
+	dma_channel_transfer_desc					m_desc;
 	wb_dma_ll_desc						m_ll_desc;
 	
 	int									m_count;
@@ -84,7 +84,7 @@ class wb_dma_descriptor_cg_small;
 	endfunction 
 
 
-	function void sample(wb_dma_descriptor desc);
+	function void sample(dma_channel_transfer_desc desc);
 		real total;
 		real inc_sel_src_dst_cross, tot_sz_cp, chk_sz_cp, chk_tot_sz_cross;
 		real inc_sel_src_dst_mask_cross;

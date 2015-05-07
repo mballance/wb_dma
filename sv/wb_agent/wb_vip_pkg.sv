@@ -16,6 +16,7 @@ package wb_vip_pkg;
 	`include "wb_simple_rw_seq.svh"
 
 	`include "wb_slave_seq_items.svh"
+	`include "wb_master_rw_seq.svh"
 	`include "wb_slave_driver.svh"
 	
 	`include "wb_master_agent.svh"

@@ -12,6 +12,10 @@
 package wb_dma_tb_pkg;
 	import uvm_pkg::*;
 	import wb_vip_pkg::*;
+	import dma_channel_agent_pkg::*;
+	import memory_mgr_pkg::*;
+	import timer_pkg::*;
+	import dma_reg_pkg::*;
 
 `ifdef INFACT
 	import inFactSv::*;
@@ -22,22 +26,13 @@ package wb_dma_tb_pkg;
 	`include "wb_dma_regs.svh"
 	
 	`include "wb_dma_irq_ev.svh"
-	`include "wb_dma_mem_ev.svh"
 	`include "wb_dma_handshake_ev.svh"
-	`include "wb_dma_desc_complete_ev.svh"
-	`include "wb_dma_descriptor.svh"
-	`include "wb_dma_descriptor_cg.svh"
-	`include "wb_dma_descriptor_cg_small.svh"
-	`include "wb_dma_descriptor_cg_demo.svh"
 
-	`include "wb_dma_memory_mgr.svh"
-	`include "wb_dma_timer.svh"
 	`include "wb_dma_slave_seq.svh"
 	
 	`include "wb_dma_irq_monitor.svh"
 	`include "wb_dma_scoreboard.svh"
 	
-	`include "wb_dma_descriptor_driver.svh"
 	`include "wb_dma_handshake_driver.svh"
 	`include "wb_dma_channel_seq.svh"
 

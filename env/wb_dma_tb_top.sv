@@ -134,13 +134,13 @@ initial begin
 	irq_cfg = new("irq_if", irq_if);
 	handshake_cfg = new("handshake_if", handshake_if);
 	
-	set_config_object("uvm_test_top.m0_driver", "master_if", m0_cfg, 0);
-	set_config_object("uvm_test_top.m1_driver", "master_if", m1_cfg, 0);
-	set_config_object("uvm_test_top.s0_driver", "slave_if", s0_cfg, 0);
-	set_config_object("uvm_test_top.s1_driver", "slave_if", s1_cfg, 0);
-	set_config_object("uvm_test_top.irq_monitor", "irq_if", irq_cfg, 0);
+	set_config_object("*.m0_agent.m_driver", "master_if", m0_cfg, 0);
+	set_config_object("*.m1_agent.m_driver", "master_if", m1_cfg, 0);
+	set_config_object("*.s0_agent.m_driver", "slave_if", s0_cfg, 0);
+	set_config_object("*.s1_agent.m_driver", "slave_if", s1_cfg, 0);
+	set_config_object("*.m_irq_monitor", "irq_if", irq_cfg, 0);
 
-	set_config_object("uvm_test_top.timer", "timer_if", m0_cfg, 0);
+	set_config_object("*.m_timer", "timer_if", m0_cfg, 0);
 	
 	set_config_object("uvm_test_top.*", "handshake_if", handshake_cfg, 0);
 

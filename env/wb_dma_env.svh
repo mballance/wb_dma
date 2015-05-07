@@ -11,16 +11,20 @@ class wb_dma_env extends uvm_env;
 	`uvm_component_utils(wb_dma_env)
 	
 	wb_master_agent										m0_agent;
-	
 	wb_master_agent										m1_agent;
 
 	wb_slave_agent										s0_agent;
 	wb_slave_agent										s1_agent;
 	
+	dma_reg_block										m_dma_regs;
+	
+	dma_reg_agent										m_reg_agent;
+	dma_reg2rw_adapter									m_reg_adapter;
+	
 	wb_dma_handshake_driver								handshake_drivers[];
 	
-	wb_dma_memory_mgr									mem_mgr;
-	wb_dma_timer										m_timer;
+	memory_mgr											mem_mgr;
+	timer												m_timer;
 	
 	wb_dma_sw											m_sw;
 	
@@ -45,7 +49,7 @@ class wb_dma_env extends uvm_env;
 		// top-level testbench module
 		assert(get_config_int("num_channels", m_num_channels));
 		
-		m_timer = new("timer", this);
+		m_timer = timer::type_id::create("m_timer", this);
 
 		m0_agent = wb_master_agent::type_id::create("m0_agent", this);
 		
@@ -54,6 +58,12 @@ class wb_dma_env extends uvm_env;
 		s0_agent = wb_slave_agent::type_id::create("s0_agent", this);
 		
 		s1_agent = wb_slave_agent::type_id::create("s1_agent", this);
+		
+		m_dma_regs = dma_reg_block::type_id::create("m_dma_regs");
+		m_dma_regs.build('hb000_0000); 
+		
+		m_reg_agent = dma_reg_agent::type_id::create("m_reg_agent", this);
+		m_reg_adapter = dma_reg2rw_adapter::type_id::create("m_reg_adapter");
 		
 		handshake_drivers = new[m_num_channels];
 		
@@ -66,7 +76,7 @@ class wb_dma_env extends uvm_env;
 		
 		m_sw = new("sw", this);
 		
-		m_irq_monitor = new("irq_monitor", this);
+		m_irq_monitor = wb_dma_irq_monitor::type_id::create("m_irq_monitor", this);
 		
 		m_scoreboard = new("scoreboard", this);
 		
@@ -154,6 +164,12 @@ class wb_dma_env extends uvm_env;
 			m_scoreboard.descriptor_complete_analysis_export.exp);
 			
 		m_scoreboard.init(mem_mgr);
+		
+		// Connect the register model
+		m_reg_agent.m_wb_seqr = m0_agent.m_seqr;
+		m_dma_regs.default_map.set_sequencer(m_reg_agent.m_seqr, m_reg_adapter);
+		m_dma_regs.default_map.set_auto_predict(1);
+		
 	endfunction
 	
 	task run();

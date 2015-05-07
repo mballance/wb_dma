@@ -11,13 +11,13 @@
 
 class wb_dma_handshake_driver extends uvm_component;
 	
-	uvm_analysis_imp #(wb_dma_descriptor, wb_dma_handshake_driver)	descriptor_analysis_export;
+	uvm_analysis_imp #(dma_channel_transfer_desc, wb_dma_handshake_driver)	descriptor_analysis_export;
 	uvm_analysis_port #(wb_dma_handshake_ev)						handshake_analysis_port;
 	
 	int							m_channel_id;
 	virtual wb_dma_handshake_if	m_if;
 	string						m_name = "HANDSHAKE";
-	wb_dma_descriptor			m_descriptor;
+	dma_channel_transfer_desc			m_descriptor;
 	bit							m_descriptor_ev;
 	wb_dma_handshake_ev			m_handshake_ev;
 	
@@ -50,9 +50,9 @@ class wb_dma_handshake_driver extends uvm_component;
 		handshake_analysis_port = new("handshake_analysis_port", this);
 	endfunction 
 	
-	function void write(wb_dma_descriptor item);
+	function void write(dma_channel_transfer_desc item);
 		if (item.channel == m_channel_id) begin
-			m_descriptor = wb_dma_descriptor'(item.clone());
+			m_descriptor = dma_channel_transfer_desc'(item.clone());
 			m_descriptor_ev = 1;
 		end
 	endfunction 

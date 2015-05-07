@@ -1,5 +1,5 @@
 /****************************************************************************
- * wb_dma_memory_mgr.svh
+ * memory_mgr.svh
  *
  * Copyright 2010 Mentor Graphics Corporation. All Rights Reserved
  * 
@@ -10,8 +10,6 @@
  * region.
  * 
  ****************************************************************************/
-`ifndef INCLUDED_WB_DMA_MEMORY_MGR_SVH
-`define INCLUDED_WB_DMA_MEMORY_MGR_SVH
 
 `undef DEBUG_MEM_MGR
 `undef DEBUG_MEM_MGR_VERBOSE
@@ -25,10 +23,10 @@ class wb_dma_mem_region;
 	bit						freed;
 endclass
 
-class wb_dma_memory_mgr extends uvm_component;
-	`uvm_component_utils(wb_dma_memory_mgr)
+class memory_mgr extends uvm_component;
+	`uvm_component_utils(memory_mgr)
 	
-	uvm_analysis_port #(wb_dma_mem_ev)					mem_analysis_port;
+	uvm_analysis_port #(mem_ev)					mem_analysis_port;
 	
 	uvm_sequencer #(wb_master_req, wb_master_rsp)		m_m0_sequencer;
 	uvm_sequencer #(wb_master_req, wb_master_rsp)		m_m1_sequencer;
@@ -41,7 +39,7 @@ class wb_dma_memory_mgr extends uvm_component;
 	// Pool of R/W sequences
 	wb_simple_rw_seq 									m_req_pool[$];
 	semaphore											m_access_sem;
-	wb_dma_mem_ev										m_mem_ev;
+	mem_ev										m_mem_ev;
 	
 	
 	function new(string name, uvm_component parent);
@@ -53,7 +51,7 @@ class wb_dma_memory_mgr extends uvm_component;
 		
 		m_access_sem = new(1);
 		
-		m_mem_ev = wb_dma_mem_ev::type_id::create("ev");
+		m_mem_ev = mem_ev::type_id::create("ev");
 	endfunction
 	
 	function void init(
@@ -373,4 +371,3 @@ class wb_dma_memory_mgr extends uvm_component;
 	
 endclass 
 
-`endif /* INCLUDED_WB_DMA_MEMORY_MGR_SVH */

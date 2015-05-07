@@ -8,7 +8,7 @@
  ****************************************************************************/
 
 `wb_dma_analysis_closure_imp_t(dma_descriptor_analysis_export_t,
-	wb_dma_descriptor, wb_dma_sw, descriptor_start)
+	dma_channel_transfer_desc, wb_dma_sw, descriptor_start)
 `wb_dma_analysis_closure_imp_t(irq_analysis_export_t,
 	wb_dma_irq_ev, wb_dma_sw, irq_event)
 
@@ -19,15 +19,15 @@ class wb_dma_sw extends uvm_component;
 	dma_descriptor_analysis_export_t				dma_descriptor_analysis_export;
 	irq_analysis_export_t							irq_analysis_export;
 			
-	uvm_analysis_port #(wb_dma_desc_complete_ev)	desc_complete_analysis_port;
-	uvm_analysis_export #(wb_dma_descriptor)		dma_desc_analysis_port;
+	uvm_analysis_port #(dma_transfer_complete_ev)	desc_complete_analysis_port;
+	uvm_analysis_export #(dma_channel_transfer_desc)		dma_desc_analysis_port;
 
 	// local fields
-	uvm_sequencer #(wb_dma_descriptor)				descriptor_sequencers[];
-	wb_dma_descriptor_driver						descriptor_drivers[];
+	uvm_sequencer #(dma_channel_transfer_desc)				descriptor_sequencers[];
+	dma_channel_driver						descriptor_drivers[];
 	
-	wb_dma_memory_mgr								m_mem_mgr;
-	wb_dma_timer									m_timer;
+	memory_mgr								m_mem_mgr;
+	timer									m_timer;
 	int												m_num_channels;
 	wb_dma_channel_seq								m_channel_seq[];
 	
@@ -36,8 +36,8 @@ class wb_dma_sw extends uvm_component;
 	event											m_irq_event;
 	bit												m_irq_active;
 	
-	wb_dma_descriptor								m_active_descriptors[$];
-	wb_dma_desc_complete_ev							m_complete_ev;
+	dma_channel_transfer_desc								m_active_descriptors[$];
+	dma_transfer_complete_ev							m_complete_ev;
 	
 	
 	function new(string name, uvm_component parent);
@@ -51,7 +51,7 @@ class wb_dma_sw extends uvm_component;
 		m_irq_state = new("irq_state");
 		m_irq_state_r = new("irq_state_r");
 		
-		m_complete_ev = wb_dma_desc_complete_ev::type_id::create("ev");
+		m_complete_ev = dma_transfer_complete_ev::type_id::create("ev");
 	endfunction
 	
 	function void build();
@@ -81,13 +81,15 @@ class wb_dma_sw extends uvm_component;
 				
 			descriptor_drivers[i].dma_desc_analysis_port.connect(
 				dma_descriptor_analysis_export.exp);
-				
+			
+			/** TODO: must handle descriptor complete
 			desc_complete_analysis_port.connect(
 				descriptor_drivers[i].descriptor_complete_analysis_export.exp);
+			 */
 		end
 	endfunction 
 	
-	function void init(wb_dma_memory_mgr mem_mgr, wb_dma_timer timer);
+	function void init(memory_mgr mem_mgr, timer timer);
 		m_mem_mgr = mem_mgr;
 		m_timer   = timer;
 		
@@ -101,8 +103,8 @@ class wb_dma_sw extends uvm_component;
 	 * 
 	 * Called when a descriptor starts
 	 */
-	function void descriptor_start(wb_dma_descriptor descriptor);
-		wb_dma_descriptor descriptor_c = wb_dma_descriptor'(descriptor.clone());
+	function void descriptor_start(dma_channel_transfer_desc descriptor);
+		dma_channel_transfer_desc descriptor_c = dma_channel_transfer_desc'(descriptor.clone());
 		
 		m_active_descriptors.push_back(descriptor_c);
 	endfunction 
@@ -129,7 +131,7 @@ class wb_dma_sw extends uvm_component;
 	task run();
 		CH_CSR_t      		ch_csr;
 		bit [31:0]    		tmp;
-		wb_dma_descriptor	desc;
+		dma_channel_transfer_desc	desc;
 		int					i;	
 		
 		create_descriptor_sequences();
@@ -234,7 +236,7 @@ class wb_dma_sw extends uvm_component;
 	task isr(wb_dma_irq_ev irq);
 		CH_CSR_t      		ch_csr;
 		bit [31:0]    		tmp;
-		wb_dma_descriptor	desc;		
+		dma_channel_transfer_desc	desc;		
 		
 		uvm_report_info("DMA_SW", $psprintf("ISR inta=%0d intb=%0d", irq.inta, irq.intb));
 		

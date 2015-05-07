@@ -1,13 +1,13 @@
 /****************************************************************************
- * wb_dma_timer.svh
+ * timer.svh
  *
  * Copyright 2010 Mentor Graphics Corporation. All Rights Reserved
  * 
  * Provides timer services to the testbench
  ****************************************************************************/
 
-class wb_dma_timer extends uvm_component;
-	`uvm_component_utils(wb_dma_timer)
+class timer extends uvm_component;
+	`uvm_component_utils(timer)
 	
 	virtual wb_if						m_if;
 	
@@ -15,7 +15,7 @@ class wb_dma_timer extends uvm_component;
 		super.new(name, parent);
 	endfunction 
 	
-	function void connect();
+	function void connect_phase(uvm_phase phase);
 		uvm_object cfg_o;
 		wb_if_config_wrapper #(virtual wb_if) cfg;
 		

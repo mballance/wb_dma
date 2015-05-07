@@ -1,5 +1,5 @@
 /****************************************************************************
- * wb_dma_descriptor.svh
+ * dma_channel_transfer_desc.svh
  * 
  * Copyright 2010 Mentor Graphics Corporation. All Rights Reserved
  *
@@ -22,8 +22,8 @@ typedef class wb_dma_ll_desc;
 
 
 
-class wb_dma_descriptor extends uvm_sequence_item;
-	`uvm_object_utils(wb_dma_descriptor)
+class dma_channel_transfer_desc extends uvm_sequence_item;
+	`uvm_object_utils(dma_channel_transfer_desc)
 	
 	// Increment source
 	rand bit					inc_src;
@@ -124,7 +124,7 @@ class wb_dma_descriptor extends uvm_sequence_item;
 		ine_done		== 1;
 	}
 	
-	function new(string name="wb_dma_descriptor");
+	function new(string name="dma_channel_transfer_desc");
 		super.new(name);
 		
 		// Initialize for the single-descriptor case
@@ -134,7 +134,7 @@ class wb_dma_descriptor extends uvm_sequence_item;
 		ine_done 		= 1;
 	endfunction 
 	
-//	`uvm_object_utils_begin(wb_dma_descriptor)
+//	`uvm_object_utils_begin(dma_channel_transfer_desc)
 //		`uvm_field_int(channel, uvm_ALL_ON)
 //		`uvm_field_int(ine_chk_done, uvm_ALL_ON)
 //		`uvm_field_int(ine_done, uvm_ALL_ON)

@@ -1,25 +1,26 @@
 /****************************************************************************
- * dma_int_msk.svh
+ * dma_channel_addr.svh
  ****************************************************************************/
 
 /**
- * Class: dma_int_msk
+ * Class: dma_channel_addr
  * 
  * TODO: Add class documentation
  */
-class dma_int_msk extends uvm_reg;
-	`uvm_object_utils(dma_int_msk)
+class dma_channel_addr extends uvm_reg;
+	`uvm_object_utils(dma_channel_addr)
 	
-	rand uvm_reg_field				MASK;
+	rand uvm_reg_field				ADDR;
 
-	function new(string name="dma_int_msk");
+	function new(string name="dma_channel_addr");
 		super.new(name, 32, UVM_NO_COVERAGE);
 	endfunction
 
 	function void build();
-		MASK = uvm_reg_field::type_id::create("MASK");
-		MASK.configure(this, 31, 0, "RW", 0, 0, 1, 0, 0);
+		ADDR = uvm_reg_field::type_id::create("ADDR");
+		ADDR.configure(this, 30, 2, "RW", 0, 0, 1, 1, 0);
 	endfunction
+	
 
 endclass
 

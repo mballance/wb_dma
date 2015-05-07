@@ -9,11 +9,11 @@
 
 
 `wb_dma_analysis_closure_imp_t(mem_analysis_export_t, 
-	wb_dma_mem_ev, wb_dma_scoreboard, write_mem_ev)
+	mem_ev, wb_dma_scoreboard, write_mem_ev)
 `wb_dma_analysis_closure_imp_t(descriptor_analysis_export_t, 
-	wb_dma_descriptor, wb_dma_scoreboard, write_descriptor_start)
+	dma_channel_transfer_desc, wb_dma_scoreboard, write_descriptor_start)
 `wb_dma_analysis_closure_imp_t(descriptor_complete_analysis_export_t,
-	wb_dma_desc_complete_ev, wb_dma_scoreboard, write_descriptor_complete)
+	dma_transfer_complete_ev, wb_dma_scoreboard, write_descriptor_complete)
 
 `wb_dma_analysis_closure_imp_t(handshake_ev_analysis_export_t,
 	wb_dma_handshake_ev, wb_dma_scoreboard, write_handshake_ev)
@@ -22,8 +22,8 @@
  * Information on each descriptor that the scoreboard is monitoring
  * 
  */
-class wb_dma_descriptor_sb_info;
-	wb_dma_descriptor						desc;
+class dma_channel_transfer_desc_sb_info;
+	dma_channel_transfer_desc						desc;
 	// Flag that tracks whether the previous access was a write
 	// Asserting that the R/W order always holds is useful in
 	// early detection of an incorrect operation
@@ -55,11 +55,11 @@ class wb_dma_scoreboard extends uvm_component;
 	descriptor_complete_analysis_export_t	descriptor_complete_analysis_export;
 	handshake_ev_analysis_export_t			handshake_ev_analysis_export;
 	
-	wb_dma_memory_mgr						m_mem_mgr;
-	wb_dma_descriptor_sb_info				m_active_descriptors[$];
+	memory_mgr						m_mem_mgr;
+	dma_channel_transfer_desc_sb_info				m_active_descriptors[$];
 	
 	// List of descriptors that must be completed in order to stop
-	wb_dma_descriptor_sb_info				m_stop_barrier[$];
+	dma_channel_transfer_desc_sb_info				m_stop_barrier[$];
 	string									m_name = "SCOREBD";
 	
 	int										m_total_descriptors;
@@ -79,7 +79,7 @@ class wb_dma_scoreboard extends uvm_component;
 	
 	endfunction
 	
-	function void init(wb_dma_memory_mgr			mem_mgr);
+	function void init(memory_mgr			mem_mgr);
 		m_mem_mgr = mem_mgr;
 	endfunction 
 	
@@ -88,11 +88,11 @@ class wb_dma_scoreboard extends uvm_component;
 	 * 
 	 * Called when the memory manager posts a memory-access event
 	 ****************************************************************/
-	function void write_mem_ev(wb_dma_mem_ev ev);
+	function void write_mem_ev(mem_ev ev);
 		bit							descriptor_access = 0;
 		bit [31:0]					src_addr, dst_addr;
 		bit							src_sel;
-		wb_dma_descriptor_sb_info 	target = null;
+		dma_channel_transfer_desc_sb_info 	target = null;
 		int							target_ll_desc_idx;
 		string mem_info;
 		
@@ -149,8 +149,8 @@ class wb_dma_scoreboard extends uvm_component;
 	 * Checks an access to an external descriptor
 	 ****************************************************************/
 	function void check_ed_access(
-		wb_dma_mem_ev				ev,
-		wb_dma_descriptor_sb_info	target,
+		mem_ev				ev,
+		dma_channel_transfer_desc_sb_info	target,
 		int							target_ll_idx);
 		
 		wb_dma_ll_desc target_ll_desc = target.desc.ll_desc[target_ll_idx];
@@ -252,7 +252,7 @@ class wb_dma_scoreboard extends uvm_component;
 	 ****************************************************************/
 	function bit [31:0] next_int_address(
 		bit						we,
-		wb_dma_descriptor		target,
+		dma_channel_transfer_desc		target,
 		bit [31:0]				address);
 		bit [31:0]				mask = 'hffff_ffff;
 		
@@ -282,12 +282,12 @@ class wb_dma_scoreboard extends uvm_component;
 	 * 
 	 * Checks whether this memory access is to descriptor space 
 	 ****************************************************************/
-	function wb_dma_descriptor_sb_info is_descriptor_access(wb_dma_mem_ev ev);
-		wb_dma_descriptor_sb_info ret = null;
+	function dma_channel_transfer_desc_sb_info is_descriptor_access(mem_ev ev);
+		dma_channel_transfer_desc_sb_info ret = null;
 		
 		for (int i=0; i<m_active_descriptors.size(); i++) begin
-			wb_dma_descriptor_sb_info desc_info = m_active_descriptors[i];
-			wb_dma_descriptor desc = desc_info.desc;
+			dma_channel_transfer_desc_sb_info desc_info = m_active_descriptors[i];
+			dma_channel_transfer_desc desc = desc_info.desc;
 			
 			// This is an access to a linked descriptor
 			if (desc.use_ed && ev.addr >= desc.ed_addr && 
@@ -306,8 +306,8 @@ class wb_dma_scoreboard extends uvm_component;
 	 * Checks an access to a descriptor described internally
 	 ****************************************************************/
 	function void check_non_ed_access(
-		wb_dma_mem_ev				ev,
-		wb_dma_descriptor_sb_info	target);
+		mem_ev				ev,
+		dma_channel_transfer_desc_sb_info	target);
 		
 		if ((ev.we && ev.ifc == target.desc.dst_sel) ||
 			(!ev.we && ev.ifc == target.desc.src_sel)) begin
@@ -333,15 +333,15 @@ class wb_dma_scoreboard extends uvm_component;
 	 * 
 	 * Checks whether the given memory-access event is within
 	 ****************************************************************/
-	function wb_dma_descriptor_sb_info is_src_dst_access(
-		wb_dma_mem_ev			ev,
+	function dma_channel_transfer_desc_sb_info is_src_dst_access(
+		mem_ev			ev,
 		output int 				ll_desc_idx_o);
-		wb_dma_descriptor_sb_info ret = null;
+		dma_channel_transfer_desc_sb_info ret = null;
 		
 		// Search for a descriptor with a memory range that matches this access 		
 		for (int i=0; i<m_active_descriptors.size(); i++) begin
-			wb_dma_descriptor_sb_info desc_info = m_active_descriptors[i];
-			wb_dma_descriptor desc = desc_info.desc;
+			dma_channel_transfer_desc_sb_info desc_info = m_active_descriptors[i];
+			dma_channel_transfer_desc desc = desc_info.desc;
 			
 			if (desc.use_ed) begin
 				for (int j=0; j<desc.ll_desc.size(); j++) begin
@@ -413,10 +413,10 @@ class wb_dma_scoreboard extends uvm_component;
 		return ret;
 	endfunction 
 	
-	function void check_priorities(wb_dma_descriptor_sb_info target);
+	function void check_priorities(dma_channel_transfer_desc_sb_info target);
 /*
-		wb_dma_descriptor_sb_info d1, d2;
-		wb_dma_descriptor_sb_info sl[$];
+		dma_channel_transfer_desc_sb_info d1, d2;
+		dma_channel_transfer_desc_sb_info sl[$];
 		
 		if (m_last_write_ch_id == -1) begin
 			m_last_write_ch_id = target.desc.channel;
@@ -446,12 +446,12 @@ class wb_dma_scoreboard extends uvm_component;
 	 * Called when the analysis port receives notification of a
 	 * starting descriptor
 	 ****************************************************************/
-	function void write_descriptor_start(wb_dma_descriptor desc);
-		wb_dma_descriptor_sb_info desc_info = new;
+	function void write_descriptor_start(dma_channel_transfer_desc desc);
+		dma_channel_transfer_desc_sb_info desc_info = new;
 		
 		desc_info.last_acc_write = 1;
 		
-		desc_info.desc = wb_dma_descriptor'(desc.clone());
+		desc_info.desc = dma_channel_transfer_desc'(desc.clone());
 
 		if (desc_info.desc.use_ed) begin
 			for (int i=0; i<desc_info.desc.ll_desc.size(); i++) begin
@@ -469,8 +469,8 @@ class wb_dma_scoreboard extends uvm_component;
 	endfunction 
 
 	
-	function void write_descriptor_complete(wb_dma_desc_complete_ev ev);
-		wb_dma_descriptor_sb_info 	desc_info = null;
+	function void write_descriptor_complete(dma_transfer_complete_ev ev);
+		dma_channel_transfer_desc_sb_info 	desc_info = null;
 		
 		uvm_report_info(m_name, $psprintf("Descriptor on channel %0d complete",
 			ev.channel), UVM_FULL);
@@ -506,7 +506,7 @@ class wb_dma_scoreboard extends uvm_component;
 		end 
 	endfunction 
 	
-	function wb_dma_descriptor_sb_info find_ch_sb_info(int channel);
+	function dma_channel_transfer_desc_sb_info find_ch_sb_info(int channel);
 		
 		for (int i=0; i<m_active_descriptors.size(); i++) begin
 			if (m_active_descriptors[i].desc.channel == channel) begin
@@ -518,7 +518,7 @@ class wb_dma_scoreboard extends uvm_component;
 	
 	
 	function void write_handshake_ev(wb_dma_handshake_ev ev);
-		wb_dma_descriptor_sb_info sb_info = find_ch_sb_info(ev.channel_id);
+		dma_channel_transfer_desc_sb_info sb_info = find_ch_sb_info(ev.channel_id);
 		wb_dma_ll_desc ll_desc;
 		int sz_delta;
 		

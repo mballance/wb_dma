@@ -1,5 +1,5 @@
 /****************************************************************************
- * wb_dma_descriptor_cg_demo.svh
+ * dma_channel_transfer_desc_cg_demo.svh
  * 
  * Copyright 2010 Mentor Graphics Corporation. All Rights Reserved
  * 
@@ -7,9 +7,9 @@
  * for the amount of time we typically have for simulation during a demo.
  ****************************************************************************/
 
-class wb_dma_descriptor_cg_demo;
+class dma_channel_transfer_desc_cg_demo;
 	
-	wb_dma_descriptor					m_desc;
+	dma_channel_transfer_desc					m_desc;
 	wb_dma_ll_desc						m_ll_desc;
 	
 	int									m_count;
@@ -83,7 +83,7 @@ class wb_dma_descriptor_cg_demo;
 	endfunction 
 
 
-	function void sample(wb_dma_descriptor desc);
+	function void sample(dma_channel_transfer_desc desc);
 		real total;
 		real inc_sel_src_dst_mask_cross, tot_sz_cp, chk_sz_cp, chk_tot_sz_cross;
 		m_desc = desc;

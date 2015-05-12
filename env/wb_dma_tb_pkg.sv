@@ -40,7 +40,9 @@ package wb_dma_tb_pkg;
 	`include "infact_channel_desc_seq.svh"
 `endif
 
+`ifdef UNDEFINED
 	`include "wb_dma_sw.svh"
+`endif
 	`include "wb_dma_env.svh"
 	
 `ifdef INFACT

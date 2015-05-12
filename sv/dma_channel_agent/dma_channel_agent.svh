@@ -34,7 +34,7 @@ class dma_channel_agent extends uvm_agent;
 	 * Override from class 
 	 */
 	virtual function void connect_phase(input uvm_phase phase);
-
+		m_driver.seq_item_port.connect(m_seqr.seq_item_export);
 	endfunction
 
 

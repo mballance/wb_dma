@@ -28,6 +28,10 @@ class dma_reg2rw_adapter extends uvm_reg_adapter;
 	
 	virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
 		dma_reg_rw bus = dma_reg_rw::type_id::create("rw");
+
+		if (rw.kind == UVM_WRITE) begin
+			$display("WRITE: 'h%08h 'h%08h", rw.addr, rw.data);
+		end
 		
 		bus.is_write = (rw.kind == UVM_WRITE);
 		bus.addr = rw.addr;

@@ -29,7 +29,7 @@ class wb_dma_reg_test_base extends wb_dma_test_base;
 	 *
 	 * Override from class 
 	 */
-	virtual task run_scenario();
+	virtual task run_scenario(uvm_phase phase);
 		dma_reg_seq_base reg_seq;
 		
 		reg_seq = dma_reg_seq_base::type_id::create("reg_seq");

@@ -8,9 +8,7 @@
  
 class wb_dma_channel_seq extends uvm_sequence #(dma_channel_transfer_desc);
 	`uvm_object_utils(wb_dma_channel_seq)
-	
-	int						m_channel_id;
-	bit						m_ok_to_run;
+	dma_channel_transfer_desc 		desc;
 	
 	function new(string name="wb_dma_channel_seq");
 		super.new(name);
@@ -18,40 +16,20 @@ class wb_dma_channel_seq extends uvm_sequence #(dma_channel_transfer_desc);
 		set_response_queue_depth(0);
 	endfunction 
 	
-	function void init(
-		int				channel_id);
-		m_channel_id = channel_id;
-	endfunction
-	
-	virtual task set_ok_to_run();
-		m_ok_to_run = 1;
-	endtask  
-	
-    /**
-     * Wait for notification that it's okay to run. This allows the 
-     * sequences to be blocked until the software has configured the
-     * interrupts
-     */
-    virtual task wait_ok_to_run();
-		wait(m_ok_to_run == 1);
-    endtask 
-	
-	
 	task body();
-		dma_channel_transfer_desc desc = dma_channel_transfer_desc::type_id::create("desc");
+		int max=10;
 		
-		desc.channel = m_channel_id;
-		
-		forever begin
-			// Wait until ok to run
-			wait_ok_to_run();
-			
-			assert(desc.randomize());
-			
-			start_item(desc);
-			finish_item(desc);
+		for (int i=1; i<=max; i++) begin
+		if (desc == null) begin
+			desc = dma_channel_transfer_desc::type_id::create("desc");
 		end
-		
+		assert(desc.randomize());
+	
+		$display("--> %0s %0d/%0d", get_name(), i, max);
+		start_item(desc);
+		finish_item(desc);
+		$display("<-- %0s %0d/%0d", get_name(), i, max);
+		end
 	endtask 
 	
 endclass

@@ -49,12 +49,12 @@ class wb_dma_test_base extends uvm_test;
 		
 		// Next, run test activity
 		phase.raise_objection(this, "Running Scenario");
-		run_scenario();
+		run_scenario(phase);
 		phase.drop_objection(this, "Running Scenario");
 		
 	endtask
 	
-	virtual task run_scenario();
+	virtual task run_scenario(uvm_phase phase);
 		$display("Error: No test scenario specified");
 	endtask
 

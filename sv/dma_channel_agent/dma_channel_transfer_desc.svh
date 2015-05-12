@@ -23,7 +23,6 @@ typedef class wb_dma_ll_desc;
 
 
 class dma_channel_transfer_desc extends uvm_sequence_item;
-	`uvm_object_utils(dma_channel_transfer_desc)
 	
 	// Increment source
 	rand bit					inc_src;
@@ -62,7 +61,7 @@ class dma_channel_transfer_desc extends uvm_sequence_item;
 
 	
 	// Indicates the priority (0 is lowest)
-	rand bit [2:0]				chn_priority;
+//	rand bit [2:0]				chn_priority;
 	
 	// Mode -- handshake or normal
 	rand mode_t					mode;
@@ -134,28 +133,27 @@ class dma_channel_transfer_desc extends uvm_sequence_item;
 		ine_done 		= 1;
 	endfunction 
 	
-//	`uvm_object_utils_begin(dma_channel_transfer_desc)
-//		`uvm_field_int(channel, uvm_ALL_ON)
-//		`uvm_field_int(ine_chk_done, uvm_ALL_ON)
-//		`uvm_field_int(ine_done, uvm_ALL_ON)
-//		`uvm_field_int(ine_err, uvm_ALL_ON)
-//		`uvm_field_int(chn_priority, uvm_ALL_ON)
-//		`uvm_field_enum(mode_t, mode, uvm_ALL_ON)
-//		`uvm_field_int(chk_sz, uvm_ALL_ON)
-//		`uvm_field_int(src_addr_mask_bits, uvm_ALL_ON)
-//		`uvm_field_int(dst_addr_mask_bits, uvm_ALL_ON)
-//		`uvm_field_int(use_ed, uvm_ALL_ON)
-//		`uvm_field_int(ed_addr, uvm_ALL_ON)
-//		
-//		`uvm_field_int(inc_src, uvm_ALL_ON)
-//		`uvm_field_int(inc_dst, uvm_ALL_ON)
-//		`uvm_field_int(src_sel, uvm_ALL_ON)
-//		`uvm_field_int(dst_sel, uvm_ALL_ON)
-//		`uvm_field_int(tot_sz, uvm_ALL_ON)
-//		`uvm_field_int(src_addr, uvm_ALL_ON)
-//		`uvm_field_int(dest_addr, uvm_ALL_ON)
-//		`uvm_field_array_object(ll_desc, uvm_ALL_ON)
-//	`uvm_object_utils_end
+	`uvm_object_utils_begin(dma_channel_transfer_desc)
+		`uvm_field_int(channel, UVM_ALL_ON)
+		`uvm_field_int(ine_chk_done, UVM_ALL_ON)
+		`uvm_field_int(ine_done, UVM_ALL_ON)
+		`uvm_field_int(ine_err, UVM_ALL_ON)
+		`uvm_field_enum(mode_t, mode, UVM_ALL_ON)
+		`uvm_field_int(chk_sz, UVM_ALL_ON)
+		`uvm_field_int(src_addr_mask_bits, UVM_ALL_ON)
+		`uvm_field_int(dst_addr_mask_bits, UVM_ALL_ON)
+		`uvm_field_int(use_ed, UVM_ALL_ON)
+		`uvm_field_int(ed_addr, UVM_ALL_ON)
+		
+		`uvm_field_int(inc_src, UVM_ALL_ON)
+		`uvm_field_int(inc_dst, UVM_ALL_ON)
+		`uvm_field_int(src_sel, UVM_ALL_ON)
+		`uvm_field_int(dst_sel, UVM_ALL_ON)
+		`uvm_field_int(tot_sz, UVM_ALL_ON)
+		`uvm_field_int(src_addr, UVM_ALL_ON)
+		`uvm_field_int(dest_addr, UVM_ALL_ON)
+		`uvm_field_array_object(ll_desc, UVM_ALL_ON)
+	`uvm_object_utils_end
 
 	function void post_randomize();
 		// Fill in the remaining descriptors

@@ -1,0 +1,2 @@
++UVM_TESTNAME=dma_block_copy_test
++uvm_set_type_override=dma_channel_transfer_desc,dma_block_copy_transfer_desc

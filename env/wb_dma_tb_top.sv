@@ -13,7 +13,7 @@ module wb_dma_tb_top;
 	import wb_dma_tests_pkg::*;
 	import wb_vip_pkg::*;
 
-parameter CH_COUNT = 4;
+parameter CH_COUNT = 31;
 
 reg		clk;
 reg		rst;
@@ -47,16 +47,11 @@ wb_dma_top
 	#(	4'hb,		// register file address
 		2'd1,		// Number of priorities (4)
 		CH_COUNT,	// Number of channels
-		4'hf,
-		4'hf,
-		4'hf,
-		4'hf,
-		4'hf,
-		4'hf,
-		4'hf,
-		4'hf
-		)
-		u0(
+		4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf,
+		4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf,
+		4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf,
+		4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf, 4'hf
+		) u0 (
 		.clk_i(		clk		),
 		.rst_i(		rst		),
 		// Slave 0 Interface

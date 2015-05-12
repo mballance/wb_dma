@@ -22,6 +22,7 @@ class wb_dma_env extends uvm_env;
 	dma_reg2rw_adapter									m_reg_adapter;
 	
 	wb_dma_handshake_driver								handshake_drivers[];
+	dma_channel_agent									channel_agents[];
 	
 	memory_mgr											mem_mgr;
 	timer												m_timer;
@@ -47,7 +48,12 @@ class wb_dma_env extends uvm_env;
 		// top-level testbench module
 		assert(get_config_int("num_channels", m_num_channels));
 		
+		mem_mgr = new("mem_mgr", this);
+		// Make the memory manager available to all
+		uvm_config_db #(memory_mgr)::set(this, "*", "memory_mgr", mem_mgr);
+		
 		m_timer = timer::type_id::create("m_timer", this);
+		uvm_config_db #(timer)::set(this, "*", "timer", m_timer);
 
 		m0_agent = wb_master_agent::type_id::create("m0_agent", this);
 		
@@ -58,7 +64,8 @@ class wb_dma_env extends uvm_env;
 		s1_agent = wb_slave_agent::type_id::create("s1_agent", this);
 		
 		m_dma_regs = dma_reg_block::type_id::create("m_dma_regs");
-		m_dma_regs.build('hb000_0000); 
+		m_dma_regs.build('hb000_0000);  // register base
+		uvm_config_db #(dma_reg_block)::set(this, "*", "dma_regs", m_dma_regs);
 		
 		m_reg_agent = dma_reg_agent::type_id::create("m_reg_agent", this);
 		m_reg_adapter = dma_reg2rw_adapter::type_id::create("m_reg_adapter");
@@ -68,9 +75,15 @@ class wb_dma_env extends uvm_env;
 		for (int i=0; i<m_num_channels; i++) begin
 			$sformat(inst_name, "handshake_driver_%0d", i);
 			handshake_drivers[i] = new(inst_name, this);
-		end 
+		end
 		
-		mem_mgr = new("mem_mgr", this);
+		channel_agents = new [m_num_channels];
+		
+		for (int i=0; i<m_num_channels; i++) begin
+			$sformat(inst_name, "channel_agent_%0d", i);
+			set_config_int({inst_name, ".*"}, "channel_id", i);
+			channel_agents[i] = dma_channel_agent::type_id::create(inst_name, this);
+		end
 		
 		m_irq_monitor = wb_dma_irq_monitor::type_id::create("m_irq_monitor", this);
 		
@@ -148,10 +161,19 @@ class wb_dma_env extends uvm_env;
 		
 		m_scoreboard.init(mem_mgr);
 		
+		foreach (channel_agents[i]) begin
+			channel_agents[i].m_driver.dma_desc_analysis_port.connect(
+				m_scoreboard.descriptor_analysis_export.exp);
+			m_scoreboard.descriptor_complete_ap.connect(
+					channel_agents[i].m_driver.dma_transfer_complete_exp);
+		end
+					
+		
 		// Connect the register model
 		m_reg_agent.m_wb_seqr = m0_agent.m_seqr;
 		m_dma_regs.default_map.set_sequencer(m_reg_agent.m_seqr, m_reg_adapter);
 		m_dma_regs.default_map.set_auto_predict(1);
+		m_dma_regs.reset();
 		
 	endfunction
 	

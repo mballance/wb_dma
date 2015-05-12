@@ -12,8 +12,10 @@ package dma_channel_agent_pkg;
 	import uvm_pkg::*;
 	import memory_mgr_pkg::*;
 	import timer_pkg::*;
+	import dma_reg_pkg::*;
 
 	`include "dma_channel_transfer_desc.svh"
+	`include "dma_block_copy_transfer_desc.svh"
 	`include "dma_transfer_complete_ev.svh"
 	`include "dma_channel_driver.svh"
 	

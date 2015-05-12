@@ -18,7 +18,7 @@ class dma_channel_addr extends uvm_reg;
 
 	function void build();
 		ADDR = uvm_reg_field::type_id::create("ADDR");
-		ADDR.configure(this, 30, 2, "RW", 0, 0, 1, 1, 0);
+		ADDR.configure(this, 30, 2, "RW", 0, 'h3fff_ffff, 1, 1, 0);
 	endfunction
 	
 

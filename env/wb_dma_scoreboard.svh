@@ -50,6 +50,8 @@ endclass
 
 
 class wb_dma_scoreboard extends uvm_component;
+	uvm_analysis_port #(dma_transfer_complete_ev)		descriptor_complete_ap;
+	
 	mem_analysis_export_t					mem_analysis_export;
 	descriptor_analysis_export_t			descriptor_analysis_export;
 	descriptor_complete_analysis_export_t	descriptor_complete_analysis_export;
@@ -74,6 +76,8 @@ class wb_dma_scoreboard extends uvm_component;
 		descriptor_complete_analysis_export = new("descriptor_complete_analysis_export", this);
 		handshake_ev_analysis_export = new("handshake_ev_analysis_export", this);
 		
+		descriptor_complete_ap = new("descriptor_complete_ap", this);
+		
 		// Enable stop processing, so the scoreboard can control completion
 		enable_stop_interrupt = 1;
 	
@@ -95,6 +99,8 @@ class wb_dma_scoreboard extends uvm_component;
 		dma_channel_transfer_desc_sb_info 	target = null;
 		int							target_ll_desc_idx;
 		string mem_info;
+		
+//		$display("write_mem_ev: %0s 'h%08h", (ev.we)?"WRITE":"READ", ev.addr);
 		
 
 		if ((target = is_descriptor_access(ev)) != null) begin
@@ -376,6 +382,10 @@ class wb_dma_scoreboard extends uvm_component;
 							desc_info.num_writes++;
 						end 
 					end
+					
+					if (desc_info.num_writes == desc_info.exp_access_cnt) begin
+						$display("TRANSFER COMPLETE");
+					end
 				end
 			end else begin
 				if (desc.inc_src) begin
@@ -403,6 +413,11 @@ class wb_dma_scoreboard extends uvm_component;
 						desc_info.num_writes++;
 					end 
 				end
+				
+				if (desc_info.num_writes == desc_info.exp_access_cnt) begin
+					// TODO: handle restart case
+					transfer_complete(desc_info);
+				end
 			end
 			
 			if (ret != null) begin
@@ -412,6 +427,18 @@ class wb_dma_scoreboard extends uvm_component;
 		
 		return ret;
 	endfunction 
+	
+	function void transfer_complete(dma_channel_transfer_desc_sb_info desc_info);
+		dma_transfer_complete_ev ev = new;
+		ev.channel = desc_info.desc.channel;
+		descriptor_complete_ap.write(ev);
+		for (int i=0; i<m_active_descriptors.size(); i++) begin
+			if (m_active_descriptors[i] == desc_info) begin
+				m_active_descriptors.delete(i);
+				break;
+			end
+		end
+	endfunction
 	
 	function void check_priorities(dma_channel_transfer_desc_sb_info target);
 /*
